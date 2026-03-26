@@ -12,7 +12,7 @@ public class SteamService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${steam.service.url}")
+    @Value("${steam.stats.service.url}")
     private String steamUrl;
 
     public SteamStatsDto getStats(Long telegramId) {

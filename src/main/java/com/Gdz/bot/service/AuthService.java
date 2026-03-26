@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -26,9 +27,19 @@ public class AuthService {
                 "steamLink", steamLink
         );
 
-        ResponseEntity<String> response =
-                restTemplate.postForEntity(url, body, String.class);
 
-        return response.getBody();
+        ResponseEntity<String> response = restTemplate.postForEntity(url, body, String.class);
+        JSONObject json = new JSONObject(response.getBody());
+
+        return String.format("""
+                Привязка аккаунта к вашему Тг
+                Статус: %s
+                Сообщение: %s
+                Steam ID: %s
+                """,
+                json.optString("status", "-"),
+                json.optString("message", "-"),
+                json.optString("steamId", "-")
+        );
     }
 }

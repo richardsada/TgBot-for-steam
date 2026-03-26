@@ -1,8 +1,10 @@
 package com.Gdz.bot;
 
 import com.Gdz.bot.dto.SteamStatsDto;
+import com.Gdz.bot.service.AiService;
 import com.Gdz.bot.service.AuthService;
 import com.Gdz.bot.service.SteamService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,15 +28,19 @@ public class SteamHelperBot extends TelegramLongPollingBot {
             new BotCommand("/start", "начать работу с ботом"),
             new BotCommand("/help", "показать список команд и помощь"),
             new BotCommand("/bind", "привязать аккаунт Steam"),
-            new BotCommand("/stats", "посмотреть статистику по играм")
+            new BotCommand("/stats", "посмотреть статистику по играм"),
+            new BotCommand("/ai", "посмотреть описание от ИИ")
+
     );
     private final AuthService authService;
     private final SteamService steamService;
+    private final AiService aiService;
     @Value("${telegram.bot.token}")
     private String botToken;
     @Value("${telegram.bot.username}")
     private String botUsername;
 
+    @PostConstruct
     public void init() {
         try {
             execute(new SetMyCommands(BOT_COMMANDS, new BotCommandScopeDefault(), null));
@@ -93,10 +99,12 @@ public class SteamHelperBot extends TelegramLongPollingBot {
                         
                         /bind <ссылка на Steam> — привязать Steam
                         /stats — показать статистику
+                        /ai — показать описание от ИИ
                         /help — помощь
                         """);
 
                 case "/stats" -> handleStats(chatId, telegramId);
+                case "/ai" -> handleAI(chatId, telegramId);
 
                 default -> createMessage(chatId, "Неизвестная команда. Напиши /help");
             };
@@ -108,6 +116,8 @@ public class SteamHelperBot extends TelegramLongPollingBot {
             log.error("Ошибка отправки сообщения", e);
         }
     }
+
+
 
     private SendMessage handleBind(long chatId, Long telegramId, String steamLink) {
         try {
@@ -136,24 +146,30 @@ public class SteamHelperBot extends TelegramLongPollingBot {
                         """);
             }
 
-            return createMessage(chatId, """
-                    🎮 Статистика Steam
-                    
-                    👤 Ник: %s
-                    🎲 Игр: %d
-                    ⏱ Часов всего: %d
-                    🏆 Топ игра: %s
-                    """
-                    .formatted(
-                            stats.getNickname(),
-                            stats.getGamesCount(),
-                            stats.getHoursTotal(),
-                            stats.getTopGame()
-                    ));
+            return createMessage(chatId, stats.toString());
 
         } catch (Exception e) {
             log.error("Ошибка получения статистики", e);
             return createMessage(chatId, "Ошибка Steam сервиса. Попробуй позже.");
+        }
+    }
+
+    private SendMessage handleAI(long chatId, Long telegramId) {
+        try {
+            String AiReview = aiService.getAiStats(telegramId);
+
+            if (AiReview == null) {
+                return createMessage(chatId, """
+                        ❌ Аккаунт не привязан.
+                        Используй /bind <ссылка на Steam>
+                        """);
+            }
+
+            return createMessage(chatId, AiReview);
+
+        } catch (Exception e) {
+            log.error("Ошибка получения описания от ИИ", e);
+            return createMessage(chatId, "Ошибка Ai сервиса. Попробуй позже.");
         }
     }
 
