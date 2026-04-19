@@ -30,6 +30,7 @@ public class SteamHelperBot extends TelegramLongPollingBot {
             new BotCommand("/start", "начать работу с ботом"),
             new BotCommand("/help", "показать список команд и помощь"),
             new BotCommand("/bind", "привязать аккаунт Steam"),
+            new BotCommand("/unbind", "отвязать аккаунт Steam"),
             new BotCommand("/stats", "посмотреть статистику по играм"),
             new BotCommand("/ai", "посмотреть описание от ИИ")
 
@@ -101,6 +102,7 @@ public class SteamHelperBot extends TelegramLongPollingBot {
                         Доступные команды:
                         
                         /bind <ссылка на Steam> — привязать Steam
+                        /unbind — отвязать привязанный Steam
                         /stats — показать статистику
                         /ai — показать описание от ИИ
                         /help — помощь
@@ -108,6 +110,7 @@ public class SteamHelperBot extends TelegramLongPollingBot {
 
                 case "/stats" -> handleStats(chatId, telegramId);
                 case "/ai" -> handleAI(chatId, telegramId);
+                case "/unbind" -> handleUnbind(chatId, telegramId);
 
                 default -> createMessage(chatId, "Неизвестная команда. Напиши /help");
             };
@@ -137,6 +140,22 @@ public class SteamHelperBot extends TelegramLongPollingBot {
             return createMessage(chatId, "Ошибка сервиса авторизации. Попробуй позже.");
         }
     }
+    private SendMessage handleUnbind(long chatId, Long telegramId) {
+        try {
+            String result = authService.requestUnbind(telegramId);
+
+            return createMessage(chatId, """
+                🔓 Отвязка Steam:
+                
+                %s
+                """.formatted(result));
+
+        } catch (Exception e) {
+            logger.error("Ошибка unbind для пользователя {}", telegramId, e);
+            return createMessage(chatId, "Не удалось выполнить отвязку. Попробуйте позже.");
+        }
+    }
+
 
     private SendMessage handleStats(long chatId, Long telegramId) {
         try {
