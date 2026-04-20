@@ -25,7 +25,7 @@ public class AiService {
         log.info("Запрос сводки от ИИ для telegramId: {}", telegramId);
 
         try {
-            log.debug("Отправка GET-запроса на URL: {}", url);
+            log.info("Отправка GET-запроса на URL: {}", url);
             String response = restTemplate.getForObject(url, String.class);
 
             if (response == null) {
@@ -33,7 +33,7 @@ public class AiService {
                 return null;
             }
 
-            log.debug("Получен ответ от сервера: {}", response);
+            log.info("Получен ответ от сервера: {}", response);
 
             JSONObject json = new JSONObject(response);
             String status = json.optString("status", "-");
