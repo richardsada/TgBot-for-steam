@@ -30,7 +30,7 @@ public class AuthService {
         log.info("Запрос привязки аккаунта Steam для telegramId: {}", telegramId);
 
         try {
-            log.debug("Отправка POST-запроса на URL: {}. Тело запроса: telegramId={}, steamLink={}",
+            log.info("Отправка POST-запроса на URL: {}. Тело запроса: telegramId={}, steamLink={}",
                     url, telegramId, steamLink);
 
             Map<String, Object> body = Map.of(
@@ -39,7 +39,7 @@ public class AuthService {
             );
 
             ResponseEntity<String> response = restTemplate.postForEntity(url, body, String.class);
-            log.debug("Получен ответ от сервера. Статус: {}, Тело: {}",
+            log.info("Получен ответ от сервера. Статус: {}, Тело: {}",
                     response.getStatusCode(), response.getBody());
 
             if (response.getBody() == null) {
@@ -93,10 +93,10 @@ public class AuthService {
         log.info("Запрос отвязки аккаунта Steam для telegramId: {}", telegramId);
 
         try {
-            log.debug("Отправка DELETE-запроса на URL: {}", url);
+            log.info("Отправка DELETE-запроса на URL: {}", url);
 
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
-            log.debug("Получен ответ от сервера. Статус: {}, Тело: {}",
+            log.info("Получен ответ от сервера. Статус: {}, Тело: {}",
                     response.getStatusCode(), response.getBody());
 
             if (response.getBody() == null) {

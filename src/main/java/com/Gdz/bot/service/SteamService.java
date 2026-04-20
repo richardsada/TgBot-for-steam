@@ -25,7 +25,7 @@ public class SteamService {
         log.info("Запрос статистики Steam для telegramId: {}", telegramId);
 
         try {
-            log.debug("Отправка GET-запроса на URL: {}", url);
+            log.info("Отправка GET-запроса на URL: {}", url);
             SteamStatsDto stats = restTemplate.getForObject(url, SteamStatsDto.class);
 
             if (stats == null) {
