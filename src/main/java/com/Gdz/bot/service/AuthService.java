@@ -58,7 +58,7 @@ public class AuthService {
             return formatBindResponse(json);
 
         } catch (HttpClientErrorException e) {
-            // Обработка клиентских ошибок (4xx), включая 409
+
             log.warn("Клиентская ошибка при привязке для telegramId: {}. Статус: {}", telegramId, e.getStatusCode());
 
             String responseBody = e.getResponseBodyAsString();
