@@ -35,11 +35,7 @@ Steam Helper Bot — это Telegram-бот, разработанный на Jav
 ### 1. Клонирование репозитория
 
 ```bash
-<<<<<<< HEAD
 git clone https://github.com/richardsada/TgBot-for-steam
-=======
-git clone <_repository_url>
->>>>>>> e454745 (-added-readme)
 cd bot-service
 ```
 
@@ -188,7 +184,7 @@ bot-service/
 
 Бот взаимодействует со следующими внешними сервисами:
 
-1. **Auth Service** — отве��ает за привязку и отвязку аккаунтов Steam к Telegram-аккаунтам
+1. **Auth Service** — отвечает за привязку и отвязку аккаунтов Steam к Telegram-аккаунтам
 2. **Steam Stats Service** — предоставляет статистику аккаунта Steam
 3. **AI Service** — генерирует описание игрового профиля на основе данных
 
