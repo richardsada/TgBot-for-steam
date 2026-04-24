@@ -9,10 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,7 +44,7 @@ class SteamServiceTest {
         Long telegramId = 123456789L;
         String expectedUrl = "http://localhost:8080/steam/stats/" + telegramId;
 
-        when(restTemplate.getForObject(eq(expectedUrl), eq(SteamStatsDto.class)))
+        when(restTemplate.getForObject(expectedUrl, SteamStatsDto.class))
                 .thenReturn(expectedStats);
 
         SteamStatsDto result = steamService.getStats(telegramId);
@@ -63,7 +60,7 @@ class SteamServiceTest {
         assertEquals("Public", result.getCommunityVisibility());
         assertEquals(1609459200L, result.getAccountCreated());
 
-        verify(restTemplate, times(1)).getForObject(eq(expectedUrl), eq(SteamStatsDto.class));
+        verify(restTemplate, times(1)).getForObject(expectedUrl, SteamStatsDto.class);
     }
 
     @Test
@@ -71,13 +68,13 @@ class SteamServiceTest {
         Long telegramId = 123456789L;
         String expectedUrl = "http://localhost:8080/steam/stats/" + telegramId;
 
-        when(restTemplate.getForObject(eq(expectedUrl), eq(SteamStatsDto.class)))
+        when(restTemplate.getForObject(expectedUrl, SteamStatsDto.class))
                 .thenReturn(null);
 
         SteamStatsDto result = steamService.getStats(telegramId);
 
         assertNull(result);
-        verify(restTemplate, times(1)).getForObject(eq(expectedUrl), eq(SteamStatsDto.class));
+        verify(restTemplate, times(1)).getForObject(expectedUrl, SteamStatsDto.class);
     }
 
     @Test
@@ -85,11 +82,11 @@ class SteamServiceTest {
         Long telegramId = 987654321L;
         String expectedUrl = "http://localhost:8080/steam/stats/" + telegramId;
 
-        when(restTemplate.getForObject(anyString(), eq(SteamStatsDto.class)))
+        when(restTemplate.getForObject(expectedUrl, SteamStatsDto.class))
                 .thenReturn(expectedStats);
 
         steamService.getStats(telegramId);
 
-        verify(restTemplate).getForObject(eq(expectedUrl), eq(SteamStatsDto.class));
+        verify(restTemplate).getForObject(expectedUrl, SteamStatsDto.class);
     }
 }

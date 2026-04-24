@@ -6,7 +6,6 @@ import com.Gdz.bot.service.AuthService;
 import com.Gdz.bot.service.SteamService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -178,16 +177,16 @@ public class SteamHelperBot extends TelegramLongPollingBot {
 
     private SendMessage handleAI(long chatId, Long telegramId) {
         try {
-            String AiReview = aiService.getAiStats(telegramId);
+            String aiReview = aiService.getAiStats(telegramId);
 
-            if (AiReview == null) {
+            if (aiReview == null) {
                 return createMessage(chatId, """
                         ❌ Аккаунт не привязан.
                         Используй /bind <ссылка на Steam>
                         """);
             }
 
-            return createMessage(chatId, AiReview);
+            return createMessage(chatId, aiReview);
 
         } catch (Exception e) {
             logger.error("Ошибка получения описания от ИИ", e);

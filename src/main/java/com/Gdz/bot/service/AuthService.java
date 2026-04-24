@@ -62,7 +62,7 @@ public class AuthService {
             log.warn("Клиентская ошибка при привязке для telegramId: {}. Статус: {}", telegramId, e.getStatusCode());
 
             String responseBody = e.getResponseBodyAsString();
-            if (responseBody != null && !responseBody.isEmpty()) {
+            if (!responseBody.isEmpty()) {
                 try {
                     JSONObject json = new JSONObject(responseBody);
                     return formatBindResponse(json);
@@ -119,7 +119,7 @@ public class AuthService {
             log.warn("Клиентская ошибка при отвязке для telegramId: {}. Статус: {}", telegramId, e.getStatusCode());
 
             String responseBody = e.getResponseBodyAsString();
-            if (responseBody != null && !responseBody.isEmpty()) {
+            if (!responseBody.isEmpty()) {
                 try {
                     JSONObject json = new JSONObject(responseBody);
                     return formatUnbindResponse(json);
