@@ -1,0 +1,16 @@
+#!/bin/sh
+
+echo "🔎 [Pre-commit] Запуск тестов через Maven Wrapper..."
+
+
+./mvnw.cmd test 
+
+status=$?
+
+if [ $status -ne 0 ]; then
+    echo "❌ [Error] Тесты не прошли. Коммит отклонен. УЖЕ ЧЕРЕЗ ПАПКУ ГИТХУКС"
+    exit 1
+fi
+
+echo "✅ [Success] Тесты пройдены. Коммит разрешен.УЖЕ ЧЕРЕЗ ПАПКУ ГИТХУКС"
+exit 0

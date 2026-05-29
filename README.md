@@ -32,6 +32,14 @@ Steam Helper Bot — это Telegram-бот, разработанный на Jav
 
 ## Установка и запуск
 
+### 0. Настройка git
+
+Настройка githooks
+
+```bash
+git config core.hooksPath githooks
+```
+
 ### 1. Клонирование репозитория
 
 ```bash
